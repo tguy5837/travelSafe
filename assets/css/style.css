@@ -1,0 +1,14 @@
+header {
+  background-color: #4103fc;
+  background-image: linear-gradient(
+    90deg,
+    #4103fc 0%,
+    #4902ad 52%,
+    #390159 90%
+  );
+}
+
+h1 {
+  color: white;
+  text-shadow: 1px 1px 3px;
+}
