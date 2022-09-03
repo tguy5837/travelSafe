@@ -22,14 +22,14 @@
       travel<h1 class="header-title my-3 safe">SAFE</h1>
     </h1>
   </header>
-  <main class="container d-flex">
-    <div class="col-4">
-      <form class="search-box d-flex flex-column pb-4">
+  <main class="container-fluid mx-3 d-flex">
+    <div class="col-3">
+      <form class="row search-box d-flex flex-column pb-4">
         <h2 class="w-100 my-2">Search By City:</h2>
-        <input class="w-100 my-2"></input>
+        <input class="w-100 my-2" placeholder="Chapel Hill"></input>
         <button id="search-button" class="btn btn-success w-100 my-2">Search</button>
       </form>
-      <div class="search-history d-flex flex-column my-4">
+      <div class="row search-history d-flex flex-column my-4">
         <a class="btn btn-secondary my-2">TESTING</a>
         <a class="btn btn-secondary my-2">TESTING</a>
         <a class="btn btn-secondary my-2">TESTING</a>
@@ -41,13 +41,10 @@
         <a class="btn btn-secondary my-2">TESTING</a>
       </div>
     </div>
-    <div class="weather-results col-8">
-      <div>
-        <card></card>
-        <card></card>
-        <card></card>
-        <card></card>
-        <card></card>
+    <div class="col-9">
+      <div class="current-weather"></div>
+      <div class="forecast-weather d-flex flex-wrap justify-content-around">
+
       </div>
     </div>
   </main>
