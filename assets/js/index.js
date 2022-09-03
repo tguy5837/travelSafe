@@ -2,6 +2,10 @@ var currentWeatherContainer = document.querySelector(".current-weather");
 
 var forecastWeatherContainer = document.querySelector(".forecast-weather");
 
+// target search elemetns
+var searchBox = document.querySelector(".search-box");
+var cityInput = document.querySelector("#city-input")
+
 var getWeatherData = function (cityName) {
     var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial&appid=cbf23c1f1f5aaf3179f3e715be9b2e92";
 
@@ -54,6 +58,10 @@ var getForecastData = function (latitude, longitude) {
 
 var displayForecastData = function (forecastData) {
     console.log(forecastData);
+
+    // clear old data
+    forecastWeatherContainer.textContent = "";
+
     // loop through forecast array dates
 
     // set current 'add day' value for date display
@@ -72,6 +80,11 @@ var displayForecastData = function (forecastData) {
         forecastDataEl.appendChild(forecastTitleEl);
         // add 1 to d so so that the following day is displayed
         d++;
+
+        // create img element for forecast icon
+        var forecastIcon = document.createElement("img");
+        forecastIcon.setAttribute("src", "http://openweathermap.org/img/w/" + currentForecastDay.weather[0].icon + ".png");
+        forecastDataEl.appendChild(forecastIcon);
 
         // create p element for forecasted temp
         var forecastTempEl = document.createElement("p");
@@ -93,6 +106,19 @@ var displayForecastData = function (forecastData) {
     };
 
 
+};
+
+var formSubmitHandler = function (event) {
+    event.preventDefault();
+    var city = cityInput.value.trim();
+
+    if (city) {
+        getWeatherData(city);
+        cityInput.value = "";
+    } else {
+        alert("Please enter a city.")
+    }
+
 }
 
 var displayWeatherData = function (weatherData, uvData, latitude, longitude) {
@@ -102,13 +128,21 @@ var displayWeatherData = function (weatherData, uvData, latitude, longitude) {
     console.log(weatherData.wind.speed + " MPH");
     console.log(weatherData.weather[0].icon);
 
+    // clear old data
+    currentWeatherContainer.textContent = "";
+
     // create current weather card
     var currentWeatherEl = document.createElement("card");
     currentWeatherEl.classList = "d-flex flex-column p-2 m-2 w-100";
 
     // create h element for current weather title
     var cityDateEl = document.createElement("h3")
-    cityDateEl.textContent = weatherData.name + " (" + moment().format("MM/DD/YYYY") + ")";
+    // create img element for icon
+    var currentWeatherIcon = document.createElement("img");
+    currentWeatherIcon.setAttribute("src", "http://openweathermap.org/img/w/" + weatherData.weather[0].icon + ".png");
+    cityDateEl.textContent = weatherData.name + " (" + moment().format("MM/DD/YYYY") + ") ";
+    // append icon to h3
+    cityDateEl.appendChild(currentWeatherIcon);
     currentWeatherEl.appendChild(cityDateEl);
 
     // create p element for current temp
@@ -137,4 +171,5 @@ var displayWeatherData = function (weatherData, uvData, latitude, longitude) {
     getForecastData(latitude, longitude);
 };
 
-getWeatherData("raleigh");
+
+searchBox.addEventListener("submit", formSubmitHandler);
