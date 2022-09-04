@@ -20,6 +20,7 @@ var getWeatherData = function (cityName, event) {
             response.json().then(function (weatherData) {
                 // save city name to local storage if there was no click event
                 if (!event) {
+                    console.log(">>> Weather Data >>>>", weatherData);
                     saveSearch(weatherData.name);
                 };
                 // store lat & lon in variables for uv search
@@ -60,6 +61,7 @@ var getForecastData = function (latitude, longitude) {
     // get forecast data from api
     fetch(apiUrl).then(function (response) {
         response.json().then(function (forecastData) {
+            console.log(">>>> Forecast Data >>>>", forecastData);
             displayForecastData(forecastData);
             cityInput.textContent = "";
         })
@@ -76,7 +78,7 @@ var displayForecastData = function (forecastData) {
 
     // set current 'add day' value for date display
     var d = 1
-    for (var i = 0; i <= 32; i = i + 8) {
+    for (var i = 7; i <= 39; i = i + 8) {
         var currentForecastDay = forecastData.list[i];
         console.log(currentForecastDay);
 
