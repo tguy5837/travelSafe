@@ -39,7 +39,7 @@ var getWeatherData = function (cityName, event) {
 
 var getUVIndex = function (weatherData, latitude, longitude) {
     // get lon & lat from data
-    var apiUrl = "http://api.openweathermap.org/data/2.5/uvi?appid=cbf23c1f1f5aaf3179f3e715be9b2e92&amp;lat=" + latitude + "&amp;lon=" + longitude;
+    var apiUrl = "https://api.openweathermap.org/data/2.5/uvi?appid=cbf23c1f1f5aaf3179f3e715be9b2e92&amp;lat=" + latitude + "&amp;lon=" + longitude;
 
     fetch(apiUrl).then(function (response) {
         // response was successful
@@ -93,7 +93,7 @@ var displayForecastData = function (forecastData) {
 
         // create img element for forecast icon
         var forecastIcon = document.createElement("img");
-        forecastIcon.setAttribute("src", "http://openweathermap.org/img/w/" + currentForecastDay.weather[0].icon + ".png");
+        forecastIcon.setAttribute("src", "https://openweathermap.org/img/w/" + currentForecastDay.weather[0].icon + ".png");
         forecastDataEl.appendChild(forecastIcon);
 
         // create p element for forecasted temp
