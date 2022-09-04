@@ -67,7 +67,7 @@ var getForecastData = function (latitude, longitude) {
 };
 
 var displayForecastData = function (forecastData) {
-    // console.log(forecastData);
+    console.log(forecastData);
 
     // clear old data
     forecastWeatherContainer.textContent = "";
@@ -76,9 +76,9 @@ var displayForecastData = function (forecastData) {
 
     // set current 'add day' value for date display
     var d = 1
-    for (var i = 4; i <= 36; i = i + 8) {
-        // console.log(forecastData.list[i])
+    for (var i = 0; i <= 32; i = i + 8) {
         var currentForecastDay = forecastData.list[i];
+        console.log(currentForecastDay);
 
         // create card for current forecasted day
         var forecastDataEl = document.createElement("card");
@@ -88,7 +88,7 @@ var displayForecastData = function (forecastData) {
         var forecastTitleEl = document.createElement("h4");
         forecastTitleEl.textContent = moment().add(d, "day").format("MM/DD/YYYY");
         forecastDataEl.appendChild(forecastTitleEl);
-        // add 1 to d so so that the following day is displayed
+        // add 1 to d so so that the following day is displayed next rotation
         d++;
 
         // create img element for forecast icon
@@ -120,7 +120,7 @@ var loadSearches = function (cityName) {
     // make sure local storage is not empty
     if ((localStorage.getItem("searchHistory"))) {
         var storedSearchHistory = JSON.parse(localStorage.getItem("searchHistory"));
-        console.log(storedSearchHistory);
+        // console.log(storedSearchHistory);
 
         // clear array for reload
         searchHistoryContainer.textContent = "";
@@ -151,13 +151,13 @@ var saveSearch = function (cityName) {
 
     // push city name to searchHistory array
     currentSearch.push(cityName);
-    console.log(currentSearch);
+    // console.log(currentSearch);
 
     if (localStorage.getItem("searchHistory")) {
         var storedSearches = JSON.parse(localStorage.getItem("searchHistory"));
         // console.log(storedSearches)
         var searchHistory = currentSearch.concat(storedSearches);
-        console.log(searchHistory);
+        // console.log(searchHistory);
         localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
         loadSearches(cityName);
     } else {
