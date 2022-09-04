@@ -82,7 +82,7 @@ var displayForecastData = function (forecastData) {
 
         // create card for current forecasted day
         var forecastDataEl = document.createElement("card");
-        forecastDataEl.classList = "forecast-card"
+        forecastDataEl.classList = "forecast-card d-block col-4 col-md-2"
 
         // create h element for forecast date
         var forecastTitleEl = document.createElement("h4");
