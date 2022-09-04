@@ -2,12 +2,15 @@ var currentWeatherContainer = document.querySelector(".current-weather");
 
 var forecastWeatherContainer = document.querySelector(".forecast-weather");
 
-// target search elemetns
+// target search elements
 var searchBox = document.querySelector(".search-box");
 var cityInput = document.querySelector("#city-input")
 
+// target search history container
+var searchHistoryContainer = document.querySelector(".search-history");
 
-var getWeatherData = function (cityName) {
+
+var getWeatherData = function (cityName, event) {
     var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial&appid=cbf23c1f1f5aaf3179f3e715be9b2e92";
 
     // make request to the url
@@ -15,8 +18,10 @@ var getWeatherData = function (cityName) {
         // response was successful
         if (response.ok) {
             response.json().then(function (weatherData) {
-                // save city name to local storage
-                saveSearch(weatherData.name);
+                // save city name to local storage if there was no click event
+                if (!event) {
+                    saveSearch(weatherData.name);
+                };
                 // store lat & lon in variables for uv search
                 var latitude = weatherData.coord.lat;
                 // console.log(latitude);
@@ -40,6 +45,7 @@ var getUVIndex = function (weatherData, latitude, longitude) {
         // response was successful
         if (response.ok) {
             response.json().then(function (uvData) {
+                console.log(uvData);
                 displayWeatherData(weatherData, uvData, latitude, longitude);
             });
         } else {
@@ -110,19 +116,20 @@ var displayForecastData = function (forecastData) {
 };
 
 
-var loadSearches = function () {
+var loadSearches = function (cityName) {
     // make sure local storage is not empty
     if ((localStorage.getItem("searchHistory"))) {
         var storedSearchHistory = JSON.parse(localStorage.getItem("searchHistory"));
         console.log(storedSearchHistory);
 
-        // target search history container
-        var searchHistoryContainer = document.querySelector(".search-history");
+        // clear array for reload
         searchHistoryContainer.textContent = "";
 
-        for (var i = 0; i < storedSearchHistory.length; i++) {
+        for (var i = 0; i < storedSearchHistory.length && i < 10; i++) {
             // create button element
             var recentSearchEl = document.createElement("button");
+            // give it a data-name
+            recentSearchEl.setAttribute("data-name", cityName);
             // set text content to city name
             recentSearchEl.textContent = storedSearchHistory[i];
             // style button
@@ -134,6 +141,8 @@ var loadSearches = function () {
     }
 
 };
+
+
 
 var saveSearch = function (cityName) {
     console.log(cityName);
@@ -150,10 +159,10 @@ var saveSearch = function (cityName) {
         var searchHistory = currentSearch.concat(storedSearches);
         console.log(searchHistory);
         localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
-        loadSearches();
+        loadSearches(cityName);
     } else {
         localStorage.setItem("searchHistory", JSON.stringify(currentSearch));
-        loadSearches();
+        loadSearches(cityName);
     }
 };
 
@@ -167,6 +176,15 @@ var formSubmitHandler = function (event) {
     } else {
         alert("Please enter a city.")
     };
+};
+
+var buttonClickHandler = function (event) {
+    event.preventDefault();
+    var target = event.target;
+    console.log(target.getAttribute("data-name"));
+    if (target.getAttribute("data-name")) {
+        getWeatherData(target.textContent, event);
+    }
 };
 
 var displayWeatherData = function (weatherData, uvData, latitude, longitude) {
@@ -218,6 +236,8 @@ var displayWeatherData = function (weatherData, uvData, latitude, longitude) {
     getForecastData(latitude, longitude);
 };
 
-loadSearches();
+loadSearches("cityName");
 
 searchBox.addEventListener("submit", formSubmitHandler);
+
+searchHistoryContainer.addEventListener("click", buttonClickHandler);
