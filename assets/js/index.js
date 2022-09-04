@@ -204,7 +204,7 @@ var displayWeatherData = function (weatherData, uvData, latitude, longitude) {
     var cityDateEl = document.createElement("h3")
     // create img element for icon
     var currentWeatherIcon = document.createElement("img");
-    currentWeatherIcon.setAttribute("src", "http://openweathermap.org/img/w/" + weatherData.weather[0].icon + ".png");
+    currentWeatherIcon.setAttribute("src", "https://openweathermap.org/img/w/" + weatherData.weather[0].icon + ".png");
     cityDateEl.textContent = weatherData.name + " (" + moment().format("MM/DD/YYYY") + ") ";
     // append icon to h3
     cityDateEl.appendChild(currentWeatherIcon);
