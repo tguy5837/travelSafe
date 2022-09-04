@@ -198,7 +198,7 @@ var displayWeatherData = function (weatherData, uvData, latitude, longitude) {
 
     // create current weather card
     var currentWeatherEl = document.createElement("card");
-    currentWeatherEl.classList = "d-flex flex-column p-2 m-2 w-100";
+    currentWeatherEl.classList = "border border-dark d-flex flex-column p-2 m-2 w-100";
 
     // create h element for current weather title
     var cityDateEl = document.createElement("h3")
@@ -239,7 +239,7 @@ var displayWeatherData = function (weatherData, uvData, latitude, longitude) {
     uvTitle.textContent = "UV Index: "
 
     // put uv index in a variable
-    var uvIndex = uvData.value
+    var uvIndex = Math.round((uvData.value - 3) * 100) / 100;
 
     // set uv number
     uvNumber.textContent = uvIndex;
