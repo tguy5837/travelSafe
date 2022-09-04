@@ -82,7 +82,7 @@ var displayForecastData = function (forecastData) {
 
         // create card for current forecasted day
         var forecastDataEl = document.createElement("card");
-        forecastDataEl.classList = "forecast-card d-block col-4 col-md-2"
+        forecastDataEl.classList = "forecast-card d-block col-5 col-md-2"
 
         // create h element for forecast date
         var forecastTitleEl = document.createElement("h4");
@@ -98,17 +98,17 @@ var displayForecastData = function (forecastData) {
 
         // create p element for forecasted temp
         var forecastTempEl = document.createElement("p");
-        forecastTempEl.textContent = "Temp: " + currentForecastDay.main.temp;
+        forecastTempEl.textContent = "Temp: " + currentForecastDay.main.temp + " ºF";
         forecastDataEl.appendChild(forecastTempEl);
 
         // create p element for forecast wind
         var forecastWindEl = document.createElement("p");
-        forecastWindEl.textContent = "Wind: " + currentForecastDay.wind.speed;
+        forecastWindEl.textContent = "Wind: " + currentForecastDay.wind.speed + " MPH";
         forecastDataEl.appendChild(forecastWindEl);
 
         // create p element for forecast humidity
         var forecastHumidityEl = document.createElement("p");
-        forecastHumidityEl.textContent = "Humidity: " + currentForecastDay.main.humidity;
+        forecastHumidityEl.textContent = "Humidity: " + currentForecastDay.main.humidity + "%";
         forecastDataEl.appendChild(forecastHumidityEl);
 
         forecastWeatherContainer.appendChild(forecastDataEl);
