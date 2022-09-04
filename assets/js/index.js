@@ -6,6 +6,7 @@ var forecastWeatherContainer = document.querySelector(".forecast-weather");
 var searchBox = document.querySelector(".search-box");
 var cityInput = document.querySelector("#city-input")
 
+
 var getWeatherData = function (cityName) {
     var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial&appid=cbf23c1f1f5aaf3179f3e715be9b2e92";
 
@@ -14,11 +15,13 @@ var getWeatherData = function (cityName) {
         // response was successful
         if (response.ok) {
             response.json().then(function (weatherData) {
+                // save city name to local storage
+                saveSearch(weatherData.name);
                 // store lat & lon in variables for uv search
                 var latitude = weatherData.coord.lat;
-                console.log(latitude);
+                // console.log(latitude);
                 var longitude = weatherData.coord.lon;
-                console.log(longitude);
+                // console.log(longitude);
 
                 // get uv index from uv api
                 getUVIndex(weatherData, latitude, longitude);
@@ -52,12 +55,13 @@ var getForecastData = function (latitude, longitude) {
     fetch(apiUrl).then(function (response) {
         response.json().then(function (forecastData) {
             displayForecastData(forecastData);
+            cityInput.textContent = "";
         })
     })
 };
 
 var displayForecastData = function (forecastData) {
-    console.log(forecastData);
+    // console.log(forecastData);
 
     // clear old data
     forecastWeatherContainer.textContent = "";
@@ -67,7 +71,7 @@ var displayForecastData = function (forecastData) {
     // set current 'add day' value for date display
     var d = 1
     for (var i = 4; i <= 36; i = i + 8) {
-        console.log(forecastData.list[i])
+        // console.log(forecastData.list[i])
         var currentForecastDay = forecastData.list[i];
 
         // create card for current forecasted day
@@ -102,10 +106,55 @@ var displayForecastData = function (forecastData) {
         forecastDataEl.appendChild(forecastHumidityEl);
 
         forecastWeatherContainer.appendChild(forecastDataEl);
-
     };
+};
 
 
+var loadSearches = function () {
+    // make sure local storage is not empty
+    if ((localStorage.getItem("searchHistory"))) {
+        var storedSearchHistory = JSON.parse(localStorage.getItem("searchHistory"));
+        console.log(storedSearchHistory);
+
+        // target search history container
+        var searchHistoryContainer = document.querySelector(".search-history");
+        searchHistoryContainer.textContent = "";
+
+        for (var i = 0; i < storedSearchHistory.length; i++) {
+            // create button element
+            var recentSearchEl = document.createElement("button");
+            // set text content to city name
+            recentSearchEl.textContent = storedSearchHistory[i];
+            // style button
+            recentSearchEl.classList = "btn btn-secondary my-2";
+            // append to search history container
+            searchHistoryContainer.appendChild(recentSearchEl);
+        }
+
+    }
+
+};
+
+var saveSearch = function (cityName) {
+    console.log(cityName);
+    // create empty array for search history
+    var currentSearch = [];
+
+    // push city name to searchHistory array
+    currentSearch.push(cityName);
+    console.log(currentSearch);
+
+    if (localStorage.getItem("searchHistory")) {
+        var storedSearches = JSON.parse(localStorage.getItem("searchHistory"));
+        // console.log(storedSearches)
+        var searchHistory = currentSearch.concat(storedSearches);
+        console.log(searchHistory);
+        localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+        loadSearches();
+    } else {
+        localStorage.setItem("searchHistory", JSON.stringify(currentSearch));
+        loadSearches();
+    }
 };
 
 var formSubmitHandler = function (event) {
@@ -117,16 +166,14 @@ var formSubmitHandler = function (event) {
         cityInput.value = "";
     } else {
         alert("Please enter a city.")
-    }
-
-}
+    };
+};
 
 var displayWeatherData = function (weatherData, uvData, latitude, longitude) {
-    console.log(weatherData);
-    console.log(weatherData.name);
-    console.log(weatherData.main.temp + " ºF");
-    console.log(weatherData.wind.speed + " MPH");
-    console.log(weatherData.weather[0].icon);
+    // console.log(weatherData);
+    // console.log(weatherData.name);
+    // console.log(weatherData.main.temp + " ºF");
+    // console.log(weatherData.wind.speed + " MPH");
 
     // clear old data
     currentWeatherContainer.textContent = "";
@@ -171,5 +218,6 @@ var displayWeatherData = function (weatherData, uvData, latitude, longitude) {
     getForecastData(latitude, longitude);
 };
 
+loadSearches();
 
 searchBox.addEventListener("submit", formSubmitHandler);
