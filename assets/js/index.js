@@ -225,9 +225,39 @@ var displayWeatherData = function (weatherData, uvData, latitude, longitude) {
     humidityEl.textContent = "Humidity: " + weatherData.main.humidity + "%";
     currentWeatherEl.appendChild(humidityEl);
 
-    // create p element for UV Index
-    var uvEl = document.createElement("p");
-    uvEl.textContent = "UV Index: " + uvData.value;
+    // create div for UV items
+    var uvEl = document.createElement("div");
+    // set uv element as flex-row
+    uvEl.classList = "d-flex flex-row"
+    // create p for title
+    var uvTitle = document.createElement("p");
+    uvTitle.classList = "mr-1";
+    // create p for uvNumber
+    var uvNumber = document.createElement("p");
+
+    // set title content
+    uvTitle.textContent = "UV Index: "
+
+    // put uv index in a variable
+    var uvIndex = uvData.value
+
+    // set uv number
+    uvNumber.textContent = uvIndex;
+
+    // append title to uv el
+    uvEl.appendChild(uvTitle);
+    uvEl.appendChild(uvNumber);
+    if (uvIndex < 2.5) {
+        uvNumber.classList = "uv uv-low";
+    } else if (uvIndex >= 2.5 && uvIndex < 5.5) {
+        uvNumber.classList = "uv uv-moderate";
+    } else if (uvIndex >= 5.5 && uvIndex < 7.5) {
+        uvNumber.classList = "uv uv-high";
+    } else if (uvIndex >= 7.5 && uvIndex < 10.5) {
+        uvNumber.classList = "uv uv-very-high";
+    } else if (uvIndex > 10.5) {
+        uvNumber.classList = "uv uv-extreme";
+    };
     currentWeatherEl.appendChild(uvEl);
 
     // append currentWeatherEl to parent container on screen
